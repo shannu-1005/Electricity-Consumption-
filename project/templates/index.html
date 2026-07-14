@@ -1,0 +1,284 @@
+{% extends "base.html" %}
+{% block title %}Problem Definition — India Electricity Analysis{% endblock %}
+{% block page_title %}Problem Definition{% endblock %}
+{% block page_subtitle %}Understanding India's Electricity Consumption 2019–2020{% endblock %}
+
+{% block content %}
+<!-- ─── Hero ─────────────────────────────────────────────────────────────── -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">
+      ⚡ Energy Analytics · India · 2019–2020
+    </div>
+    <h1>India Electricity<br>Consumption Analysis</h1>
+    <p>
+      An in-depth, state-wise analysis of electricity consumption patterns across India from
+      January 2019 to December 2020, covering seasonal trends, regional disparities, and the
+      unprecedented impact of the COVID-19 pandemic and nationwide lockdown.
+    </p>
+    <div class="hero-actions">
+      <a href="/dashboard" class="btn btn-primary">⚡ View Dashboard</a>
+      <a href="/story" class="btn btn-ghost">📖 Read the Story</a>
+      <a href="/api/performance" target="_blank" class="btn btn-ghost">📊 Performance Metrics</a>
+    </div>
+  </div>
+</section>
+
+<div class="page-content">
+
+  <!-- ─── Quick Stats ─────────────────────────────────────────────────────── -->
+  <div class="stat-grid" id="quickStats">
+    <div class="stat-card" style="--accent-line: #00d4ff">
+      <div class="stat-icon">🗄️</div>
+      <div class="stat-value" id="statRows">—</div>
+      <div class="stat-label">Total Data Rows</div>
+      <div class="stat-change up">↑ Loaded into SQLite DB</div>
+    </div>
+    <div class="stat-card" style="--accent-line: #10e88a">
+      <div class="stat-icon">🗺️</div>
+      <div class="stat-value" id="statStates">—</div>
+      <div class="stat-label">Indian States</div>
+      <div class="stat-change up">5 Regions Covered</div>
+    </div>
+    <div class="stat-card" style="--accent-line: #8b5cf6">
+      <div class="stat-icon">📅</div>
+      <div class="stat-value">24</div>
+      <div class="stat-label">Months Covered</div>
+      <div class="stat-change">Jan 2019 – Dec 2020</div>
+    </div>
+    <div class="stat-card" style="--accent-line: #ff7c3b">
+      <div class="stat-icon">📊</div>
+      <div class="stat-value" id="statViz">6</div>
+      <div class="stat-label">Visualizations</div>
+      <div class="stat-change up">↑ Interactive Charts</div>
+    </div>
+    <div class="stat-card" style="--accent-line: #ffd32a">
+      <div class="stat-icon">🧮</div>
+      <div class="stat-value" id="statCalc">5</div>
+      <div class="stat-label">Calc. Fields</div>
+      <div class="stat-change">YoY, Recovery Index…</div>
+    </div>
+    <div class="stat-card" style="--accent-line: #ff4757">
+      <div class="stat-icon">🔍</div>
+      <div class="stat-value" id="statFilters">4</div>
+      <div class="stat-label">Data Filters</div>
+      <div class="stat-change">State · Region · Year · Month</div>
+    </div>
+  </div>
+
+  <!-- ─── Project Background ─────────────────────────────────────────────── -->
+  <div class="section-divider"><h2>📋 Problem Understanding</h2></div>
+
+  <div class="card" style="margin-bottom:24px">
+    <p style="line-height:1.8; font-size:14px; color:var(--text-secondary)">
+      Electricity is a vital driver of economic activity, and its consumption reflects both industrial
+      productivity and household energy access. In 2015–16, <strong style="color:var(--text-primary)">
+      agriculture accounted for 17.89%</strong> of electric energy usage in India.
+      Despite relatively low electricity tariffs, India's <strong style="color:var(--text-primary)">per capita
+      electricity consumption remains below global averages</strong>, indicating both growth potential
+      and infrastructural challenges.
+    </p>
+    <br>
+    <p style="line-height:1.8; font-size:14px; color:var(--text-secondary)">
+      The COVID-19 pandemic introduced a unique scenario for energy analysis. With lockdowns enforced,
+      various sectors saw drastic shifts — <span class="tag tag-red">industries ↓</span>
+      <span class="tag tag-red">transportation ↓</span>
+      <span class="tag tag-green">residential ↑</span> — creating a once-in-a-generation dataset
+      for understanding demand elasticity and economic coupling.
+    </p>
+  </div>
+
+  <!-- ─── 3 Scenarios ────────────────────────────────────────────────────── -->
+  <div class="section-divider"><h2>🎯 Analysis Scenarios</h2></div>
+
+  <div class="scenario-grid">
+    <div class="scenario-card" style="--sc-color: #00d4ff">
+      <div class="scenario-num">01</div>
+      <div class="scenario-icon">📈</div>
+      <h3>Overall Consumption Trends</h3>
+      <p>Month-by-month national electricity usage from January 2019 to December 2020, revealing expected
+      seasonal patterns and the dramatic COVID-19 lockdown dip in April–May 2020.</p>
+      <br>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span class="tag tag-cyan">Line Chart</span>
+        <span class="tag tag-cyan">Area Chart</span>
+        <span class="tag tag-cyan">24 data points</span>
+      </div>
+    </div>
+
+    <div class="scenario-card" style="--sc-color: #8b5cf6">
+      <div class="scenario-num">02</div>
+      <div class="scenario-icon">🗺️</div>
+      <h3>Regional Variations in Demand</h3>
+      <p>Comparing Northern, Southern, Eastern, Western, and Northeastern regions' electricity
+      consumption to understand uneven demand distribution driven by climate, industry, and population.</p>
+      <br>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span class="tag tag-cyan">Bar Chart</span>
+        <span class="tag tag-cyan">Donut Chart</span>
+        <span class="tag tag-cyan">5 Regions</span>
+      </div>
+    </div>
+
+    <div class="scenario-card" style="--sc-color: #10e88a">
+      <div class="scenario-num">03</div>
+      <div class="scenario-icon">🔄</div>
+      <h3>Recovery After Lockdown</h3>
+      <p>Evaluating post-lockdown electricity demand recovery (mid-2020 to Dec 2020) across states,
+      revealing diverse economic rebound rates and identifying which states led vs. lagged recovery.</p>
+      <br>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        <span class="tag tag-cyan">Recovery Index</span>
+        <span class="tag tag-cyan">YoY Change %</span>
+        <span class="tag tag-cyan">30 States</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─── Methodology ────────────────────────────────────────────────────── -->
+  <div class="section-divider"><h2>⚙️ Project Methodology</h2></div>
+
+  <div class="info-grid">
+    <div class="info-card">
+      <h4>📌 Problem Definition</h4>
+      <ul>
+        <li>Analyze electricity consumption shifts during COVID-19</li>
+        <li>Identify regional demand disparities across 5 regions</li>
+        <li>Quantify lockdown impact on industrial vs. residential sectors</li>
+        <li>Measure recovery speed by state post-lockdown</li>
+      </ul>
+    </div>
+
+    <div class="info-card">
+      <h4>🗃️ Data Collection & DB</h4>
+      <ul>
+        <li>Monthly state-wise consumption data (MU) for 2019–2020</li>
+        <li>Stored in SQLite database (electricity.db)</li>
+        <li>SQL operations: INSERT, GROUP BY, JOIN, VIEW, filters</li>
+        <li>Calculation fields: YoY %, Recovery Index, Regional Share</li>
+      </ul>
+    </div>
+
+    <div class="info-card">
+      <h4>🎨 Data Preparation & Viz</h4>
+      <ul>
+        <li>Pandas for data cleaning & transformation</li>
+        <li>6 unique visualizations via Chart.js</li>
+        <li>Interactive filters: State, Region, Year, Month range</li>
+        <li>Dashboard + Data Story (5 scenes) embedded in Flask</li>
+      </ul>
+    </div>
+
+    <div class="info-card">
+      <h4>🌐 Web Integration</h4>
+      <ul>
+        <li>Flask REST API with 8 endpoints</li>
+        <li>Dashboard embedded at /dashboard</li>
+        <li>Story view embedded at /story</li>
+        <li>Fully responsive premium dark UI</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ─── SQL Operations ─────────────────────────────────────────────────── -->
+  <div class="section-divider"><h2>🗄️ SQL Operations & Calculation Fields</h2></div>
+
+  <div class="chart-grid cols-2" style="margin-bottom:24px">
+    <div class="card">
+      <div class="card-title">🔧 SQL Operations</div>
+      <div class="card-subtitle">Key queries executed on electricity_consumption table</div>
+      <table class="data-table">
+        <thead><tr><th>Operation</th><th>Description</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tag tag-cyan">CREATE TABLE</span></td><td>electricity_consumption schema</td></tr>
+          <tr><td><span class="tag tag-cyan">INSERT INTO</span></td><td>Bulk-load 720 rows from CSV</td></tr>
+          <tr><td><span class="tag tag-cyan">GROUP BY</span></td><td>Monthly/regional aggregation</td></tr>
+          <tr><td><span class="tag tag-cyan">JOIN</span></td><td>2020 vs 2019 YoY comparison</td></tr>
+          <tr><td><span class="tag tag-cyan">CREATE VIEW</span></td><td>v_yoy_change computed view</td></tr>
+          <tr><td><span class="tag tag-cyan">WHERE filters</span></td><td>State, region, year, month</td></tr>
+          <tr><td><span class="tag tag-cyan">CASE WHEN</span></td><td>Pre/during/post lockdown split</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <div class="card-title">🧮 Calculation Fields</div>
+      <div class="card-subtitle">Derived metrics computed in SQL & Python</div>
+      <table class="data-table">
+        <thead><tr><th>Field</th><th>Formula</th></tr></thead>
+        <tbody>
+          <tr><td><code style="color:var(--accent-cyan)">yoy_change_pct</code></td><td>((2020−2019)/2019) × 100</td></tr>
+          <tr><td><code style="color:var(--accent-cyan)">recovery_index</code></td><td>(2020/2019) × 100</td></tr>
+          <tr><td><code style="color:var(--accent-cyan)">avg_lockdown</code></td><td>AVG(MU) for months 3–6, 2020</td></tr>
+          <tr><td><code style="color:var(--accent-cyan)">avg_recovery</code></td><td>AVG(MU) for months 7–12, 2020</td></tr>
+          <tr><td><code style="color:var(--accent-cyan)">regional_share</code></td><td>Region MU / National MU × 100</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ─── Performance Stats ──────────────────────────────────────────────── -->
+  <div class="section-divider"><h2>⚡ Performance Testing Metrics</h2></div>
+
+  <div class="card">
+    <div class="card-title">📊 System Performance Summary</div>
+    <div class="card-subtitle">Metrics from data pipeline and visualization rendering</div>
+    <div class="perf-grid" id="perfGrid">
+      <div class="perf-stat">
+        <div class="perf-stat-val" id="pRows">—</div>
+        <div class="perf-stat-lbl">Rows in DB</div>
+      </div>
+      <div class="perf-stat">
+        <div class="perf-stat-val" id="pStates">30</div>
+        <div class="perf-stat-lbl">States</div>
+      </div>
+      <div class="perf-stat">
+        <div class="perf-stat-val" id="pRegions">5</div>
+        <div class="perf-stat-lbl">Regions</div>
+      </div>
+      <div class="perf-stat">
+        <div class="perf-stat-val" id="pCalc">5</div>
+        <div class="perf-stat-lbl">Calc. Fields</div>
+      </div>
+      <div class="perf-stat">
+        <div class="perf-stat-val" id="pViz">6</div>
+        <div class="perf-stat-lbl">Visualizations</div>
+      </div>
+      <div class="perf-stat">
+        <div class="perf-stat-val" id="pFilters">4</div>
+        <div class="perf-stat-lbl">Data Filters</div>
+      </div>
+      <div class="perf-stat">
+        <div class="perf-stat-val" id="pScenes">5</div>
+        <div class="perf-stat-lbl">Story Scenes</div>
+      </div>
+      <div class="perf-stat">
+        <div class="perf-stat-val" id="pViews">1</div>
+        <div class="perf-stat-lbl">SQL Views</div>
+      </div>
+    </div>
+  </div>
+
+  <br>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  fetch('/api/performance')
+    .then(r => r.json())
+    .then(d => {
+      document.getElementById('statRows').textContent   = d.total_rows.toLocaleString();
+      document.getElementById('statStates').textContent = d.total_states;
+      document.getElementById('pRows').textContent      = d.total_rows.toLocaleString();
+      document.getElementById('pStates').textContent    = d.total_states;
+      document.getElementById('pRegions').textContent   = d.total_regions;
+      document.getElementById('pCalc').textContent      = d.calculation_fields;
+      document.getElementById('pViz').textContent       = d.visualizations;
+      document.getElementById('pFilters').textContent   = d.filter_types;
+      document.getElementById('pScenes').textContent    = d.story_scenes;
+      document.getElementById('pViews').textContent     = d.views;
+    });
+</script>
+{% endblock %}

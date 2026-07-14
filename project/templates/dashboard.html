@@ -1,0 +1,160 @@
+{% extends "base.html" %}
+{% block title %}Dashboard — India Electricity Analysis{% endblock %}
+{% block page_title %}Interactive Dashboard{% endblock %}
+{% block page_subtitle %}6 Visualizations · Real-time Filters · India 2019–2020{% endblock %}
+{% block header_badges %}
+  <span class="badge">6 Charts</span>
+  <span class="badge green">Live Data</span>
+  <span class="badge orange">4 Filters</span>
+{% endblock %}
+
+{% block content %}
+<div class="page-content">
+
+  <!-- ─── Filter Bar ─────────────────────────────────────────────────────── -->
+  <div class="filter-bar">
+    <span class="filter-label">🔍 Filters:</span>
+
+    <select class="filter-select" id="filterRegion" onchange="applyFilters()">
+      <option value="">All Regions</option>
+      <option value="Northern">Northern</option>
+      <option value="Southern">Southern</option>
+      <option value="Eastern">Eastern</option>
+      <option value="Western">Western</option>
+      <option value="Northeastern">Northeastern</option>
+    </select>
+
+    <select class="filter-select" id="filterState" onchange="applyFilters()">
+      <option value="">All States</option>
+    </select>
+
+    <select class="filter-select" id="filterYear" onchange="applyFilters()">
+      <option value="">Both Years</option>
+      <option value="2019">2019 Only</option>
+      <option value="2020">2020 Only</option>
+    </select>
+
+    <select class="filter-select" id="filterMonth" onchange="applyFilters()">
+      <option value="">All Months</option>
+      <option value="pre">Pre-Lockdown (Jan–Feb 2020)</option>
+      <option value="lock">Lockdown (Mar–Jun 2020)</option>
+      <option value="post">Recovery (Jul–Dec 2020)</option>
+    </select>
+
+    <button class="btn btn-primary" onclick="resetFilters()">↺ Reset</button>
+    <button class="btn btn-ghost" onclick="exportData()">⬇ Export JSON</button>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       ROW 1: Scenario 1 — National Trends (full width)
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="section-divider"><h2>📈 Scenario 1 — Overall Consumption Trends</h2></div>
+
+  <div class="chart-grid" style="margin-bottom:20px">
+    <div class="chart-wrapper">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">⚡ National Monthly Electricity Consumption (2019 vs 2020)</div>
+          <div class="chart-desc">Line chart showing month-by-month total consumption in Million Units — COVID-19 lockdown dip clearly visible (Apr–Jun 2020)</div>
+        </div>
+        <span class="tag tag-cyan">Chart 1</span>
+      </div>
+      <div class="chart-canvas-container" style="height:280px">
+        <canvas id="chart_trends"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Area Chart (COVID impact zoomed) -->
+  <div class="chart-grid" style="margin-bottom:20px">
+    <div class="chart-wrapper">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">🦠 COVID-19 Lockdown Impact — Area Chart (2020)</div>
+          <div class="chart-desc">Area chart showing monthly deviation from 2019 baseline in 2020. Shaded red zone = lockdown period (Mar–Jun)</div>
+        </div>
+        <span class="tag tag-red">Chart 5 · Lockdown Zone</span>
+      </div>
+      <div class="chart-canvas-container" style="height:240px">
+        <canvas id="chart_covid"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       ROW 2: Scenario 2 — Regional Variations
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="section-divider"><h2>🗺️ Scenario 2 — Regional Variations in Demand</h2></div>
+
+  <div class="chart-grid cols-2" style="margin-bottom:20px">
+    <!-- Grouped bar: regions -->
+    <div class="chart-wrapper">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">📊 Regional Consumption — 2019 vs 2020</div>
+          <div class="chart-desc">Grouped bar chart comparing regional totals across both years</div>
+        </div>
+        <span class="tag tag-cyan">Chart 2</span>
+      </div>
+      <div class="region-legend" id="regionLegend"></div>
+      <div class="chart-canvas-container" style="height:250px">
+        <canvas id="chart_regions"></canvas>
+      </div>
+    </div>
+
+    <!-- Donut: regional share -->
+    <div class="chart-wrapper">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">🍩 Regional Share of National Consumption (2020)</div>
+          <div class="chart-desc">Donut chart — percentage breakdown of electricity by region</div>
+        </div>
+        <span class="tag tag-cyan">Chart 3</span>
+      </div>
+      <div class="chart-canvas-container" style="height:280px">
+        <canvas id="chart_donut"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════════════════════════════════════
+       ROW 3: Scenario 3 — Recovery + Heatmap
+       ═══════════════════════════════════════════════════════════════════════ -->
+  <div class="section-divider"><h2>🔄 Scenario 3 — Recovery After Lockdown</h2></div>
+
+  <div class="chart-grid" style="margin-bottom:20px">
+    <!-- Grouped bar: pre/during/post lockdown -->
+    <div class="chart-wrapper">
+      <div class="chart-header">
+        <div>
+          <div class="chart-title">📊 Pre-Lockdown vs During vs Post-Lockdown (Top 10 States)</div>
+          <div class="chart-desc">Grouped bar comparing average MU in 3 phases — shows recovery gap for each state</div>
+        </div>
+        <span class="tag tag-green">Chart 4</span>
+      </div>
+      <div class="chart-canvas-container" style="height:300px">
+        <canvas id="chart_lockdown"></canvas>
+      </div>
+    </div>
+  </div>
+
+  <!-- Heatmap table -->
+  <div class="chart-wrapper" style="margin-bottom:20px">
+    <div class="chart-header">
+      <div>
+        <div class="chart-title">🔥 Consumption Heatmap — State × Month (2020)</div>
+        <div class="chart-desc">Color-coded table: darker = higher consumption; white = lowest; lockdown months clearly visible</div>
+      </div>
+      <span class="tag tag-orange">Chart 6</span>
+    </div>
+    <div class="heatmap-container" id="heatmapContainer">
+      <div class="loading"><div class="spinner"></div> Loading heatmap…</div>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/dashboard.js') }}"></script>
+{% endblock %}

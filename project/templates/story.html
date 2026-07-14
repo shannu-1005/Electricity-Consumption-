@@ -1,0 +1,300 @@
+{% extends "base.html" %}
+{% block title %}Data Story — India Electricity Analysis{% endblock %}
+{% block page_title %}Data Story{% endblock %}
+{% block page_subtitle %}5-Scene Narrative · India's Electricity Journey 2019–2020{% endblock %}
+{% block header_badges %}
+  <span class="badge">5 Scenes</span>
+  <span class="badge green">Auto-play</span>
+  <span class="badge orange">Narrative</span>
+{% endblock %}
+
+{% block extra_head %}
+<style>
+  .story-layout { display: flex; flex-direction: column; height: calc(100vh - 64px); overflow: hidden; }
+  .story-body { flex: 1; overflow-y: auto; }
+  .story-auto-ctrl {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 28px; border-bottom: 1px solid var(--border);
+    background: var(--bg-secondary);
+  }
+  .story-auto-ctrl label { font-size: 12px; color: var(--text-secondary); }
+  .toggle-btn {
+    width: 36px; height: 20px; background: var(--border); border-radius: 10px;
+    position: relative; cursor: pointer; transition: background 0.3s; border: none;
+    outline: none;
+  }
+  .toggle-btn.on { background: var(--accent-cyan); }
+  .toggle-btn::after {
+    content: ''; position: absolute; top: 2px; left: 2px;
+    width: 16px; height: 16px; border-radius: 50%;
+    background: white; transition: left 0.3s;
+  }
+  .toggle-btn.on::after { left: 18px; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="story-layout">
+
+  <!-- ─── Auto-play control ──────────────────────────────────────────────── -->
+  <div class="story-auto-ctrl">
+    <button class="toggle-btn" id="autoToggle" onclick="toggleAutoPlay()"></button>
+    <label>Auto-play scenes (8s each)</label>
+    <span style="margin-left:auto; font-size:12px; color:var(--text-muted)" id="sceneLabel">Scene 1 of 5</span>
+  </div>
+
+  <!-- ─── Progress bar ───────────────────────────────────────────────────── -->
+  <div class="story-progress">
+    <div class="story-progress-bar" id="progressBar"></div>
+  </div>
+
+  <!-- ─── Story body ─────────────────────────────────────────────────────── -->
+  <div class="story-body" id="storyBody">
+
+    <!-- ══════════════════ SCENE 1 — The Normal World ══════════════════ -->
+    <div class="scene active" id="scene-1">
+      <div style="padding:40px 28px">
+        <div class="scene-number">Scene 1 of 5</div>
+        <div class="scene-title" style="background:linear-gradient(135deg,#fff,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+          The Normal World
+        </div>
+        <div class="scene-subtitle">
+          Before COVID-19, India's electricity consumption in 2019 followed well-established seasonal patterns —
+          summer peaks driven by air conditioning demand, monsoon dips, and steady industrial consumption.
+          Let's establish the 2019 baseline that defines what "normal" looks like.
+        </div>
+
+        <div class="chart-grid cols-2" style="margin-bottom:24px">
+          <div class="chart-wrapper">
+            <div class="chart-title" style="margin-bottom:12px">📈 2019 Monthly National Consumption</div>
+            <div style="height:220px"><canvas id="s1_chart1"></canvas></div>
+          </div>
+          <div class="chart-wrapper">
+            <div class="chart-title" style="margin-bottom:12px">🗺️ 2019 Regional Distribution</div>
+            <div style="height:220px"><canvas id="s1_chart2"></canvas></div>
+          </div>
+        </div>
+
+        <div class="insight-grid">
+          <div class="insight-card">
+            <div class="insight-num" id="s1_peak">—</div>
+            <div class="insight-label">Peak month MU (May 2019)</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num">Western</div>
+            <div class="insight-label">Highest consuming region (2019)</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num">+4.2%</div>
+            <div class="insight-label">Expected YoY growth (pre-COVID)</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num">May</div>
+            <div class="insight-label">Consistent summer peak month</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════ SCENE 2 — The Pandemic Hits ══════════════════ -->
+    <div class="scene" id="scene-2">
+      <div style="padding:40px 28px">
+        <div class="scene-number">Scene 2 of 5</div>
+        <div class="scene-title" style="background:linear-gradient(135deg,#ff4757,#ff7c3b);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+          The Pandemic Hits
+        </div>
+        <div class="scene-subtitle">
+          On March 24, 2020, India entered one of the world's strictest nationwide lockdowns.
+          Within weeks, electricity demand collapsed — factories shut, offices emptied, and transportation
+          froze. April 2020 saw consumption fall by over <strong style="color:#ff4757">35–40%</strong> compared
+          to April 2019 in industrial states.
+        </div>
+
+        <div class="chart-grid" style="margin-bottom:24px">
+          <div class="chart-wrapper">
+            <div class="chart-title" style="margin-bottom:12px">📉 2019 vs 2020 Monthly Comparison — The Dip</div>
+            <div style="height:260px"><canvas id="s2_chart1"></canvas></div>
+          </div>
+        </div>
+
+        <div class="insight-grid">
+          <div class="insight-card">
+            <div class="insight-num" style="color:var(--accent-red)" id="s2_maxDrop">—</div>
+            <div class="insight-label">Max YoY drop in April 2020</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num" style="color:var(--accent-red)">Phase 1–4</div>
+            <div class="insight-label">Lockdown phases enforced</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num" style="color:var(--accent-orange)">Apr–Jun</div>
+            <div class="insight-label">Deepest impact period</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num" style="color:var(--accent-orange)">MH, GJ, TN</div>
+            <div class="insight-label">Most impacted industrial states</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════ SCENE 3 — Regional Divide ══════════════════ -->
+    <div class="scene" id="scene-3">
+      <div style="padding:40px 28px">
+        <div class="scene-number">Scene 3 of 5</div>
+        <div class="scene-title" style="background:linear-gradient(135deg,#8b5cf6,#3d7fff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+          The Regional Divide
+        </div>
+        <div class="scene-subtitle">
+          India's five regions experienced the pandemic's electricity impact very differently.
+          Western states (Maharashtra, Gujarat) with high industrial bases saw the steepest falls.
+          Northeastern states, with primarily agricultural and residential consumption, were far more resilient.
+        </div>
+
+        <div class="chart-grid cols-2" style="margin-bottom:24px">
+          <div class="chart-wrapper">
+            <div class="chart-title" style="margin-bottom:12px">🌍 Regional YoY Change by Month (2020)</div>
+            <div style="height:240px"><canvas id="s3_chart1"></canvas></div>
+          </div>
+          <div class="chart-wrapper">
+            <div class="chart-title" style="margin-bottom:12px">📊 Region Recovery Comparison</div>
+            <div style="height:240px"><canvas id="s3_chart2"></canvas></div>
+          </div>
+        </div>
+
+        <div class="insight-grid">
+          <div class="insight-card">
+            <div class="insight-num" style="color:var(--accent-red)">Western</div>
+            <div class="insight-label">Highest COVID-impact region</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num" style="color:var(--accent-green)">Northeastern</div>
+            <div class="insight-label">Most resilient region</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num">5 Regions</div>
+            <div class="insight-label">Analysed across India</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num">2× Gap</div>
+            <div class="insight-label">Between highest & lowest impact</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════ SCENE 4 — The Road to Recovery ══════════════════ -->
+    <div class="scene" id="scene-4">
+      <div style="padding:40px 28px">
+        <div class="scene-number">Scene 4 of 5</div>
+        <div class="scene-title" style="background:linear-gradient(135deg,#10e88a,#00d4ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+          The Road to Recovery
+        </div>
+        <div class="scene-subtitle">
+          As India's Unlock phases began in June 2020, electricity demand began a slow but steady rebound.
+          By October 2020, most states had recovered to 95–98% of their 2019 levels — but the
+          pace varied dramatically across states based on industrial composition and economic structure.
+        </div>
+
+        <div class="chart-grid" style="margin-bottom:24px">
+          <div class="chart-wrapper">
+            <div class="chart-title" style="margin-bottom:12px">🔄 Recovery Index by State (Jul–Dec 2020 vs 2019)</div>
+            <div style="height:280px"><canvas id="s4_chart1"></canvas></div>
+          </div>
+        </div>
+
+        <div class="insight-grid">
+          <div class="insight-card">
+            <div class="insight-num" style="color:var(--accent-green)" id="s4_best">—</div>
+            <div class="insight-label">Fastest recovering state</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num" id="s4_dec">~98%</div>
+            <div class="insight-label">National recovery by Dec 2020</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num" style="color:var(--accent-green)">Jul 2020</div>
+            <div class="insight-label">Unlock 2.0 — turning point</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num">6 Months</div>
+            <div class="insight-label">Duration of recovery phase</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══════════════════ SCENE 5 — Lessons & Outlook ══════════════════ -->
+    <div class="scene" id="scene-5">
+      <div style="padding:40px 28px">
+        <div class="scene-number">Scene 5 of 5</div>
+        <div class="scene-title" style="background:linear-gradient(135deg,#fff,#ffd32a);-webkit-background-clip:text;-webkit-text-fill-color:transparent">
+          Lessons & Future Outlook
+        </div>
+        <div class="scene-subtitle">
+          The 2019–2020 electricity data provides invaluable lessons for India's energy policy.
+          The pandemic revealed India's electricity-economy coupling — and the resilience of
+          agricultural and residential demand even during extreme disruptions. These insights
+          should guide smarter grid infrastructure, demand forecasting, and energy equity policies.
+        </div>
+
+        <div class="chart-grid cols-2" style="margin-bottom:24px">
+          <div class="chart-wrapper">
+            <div class="chart-title" style="margin-bottom:12px">📊 Full 2-Year National Summary</div>
+            <div style="height:220px"><canvas id="s5_chart1"></canvas></div>
+          </div>
+          <div class="chart-wrapper">
+            <div class="chart-title" style="margin-bottom:12px">🏆 Top 5 Fastest Recovering States</div>
+            <div style="height:220px"><canvas id="s5_chart2"></canvas></div>
+          </div>
+        </div>
+
+        <div class="insight-grid">
+          <div class="insight-card">
+            <div class="insight-num">Agriculture</div>
+            <div class="insight-label">Most resilient sector during lockdown</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num">17.89%</div>
+            <div class="insight-label">Agriculture's share of India's electricity</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num">+4.2%</div>
+            <div class="insight-label">Pre-COVID annual growth rate</div>
+          </div>
+          <div class="insight-card">
+            <div class="insight-num">Infra</div>
+            <div class="insight-label">Key challenge: Per capita gap vs world avg</div>
+          </div>
+        </div>
+
+        <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap">
+          <a href="/dashboard" class="btn btn-primary">📊 Explore Dashboard</a>
+          <a href="/" class="btn btn-ghost">🏠 Back to Overview</a>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /story-body -->
+
+  <!-- ─── Navigation ─────────────────────────────────────────────────────── -->
+  <div class="story-nav">
+    <button class="btn btn-ghost" onclick="prevScene()" id="btnPrev">← Previous</button>
+
+    <div class="scene-dots" id="sceneDots">
+      <div class="scene-dot active" onclick="goToScene(1)" title="The Normal World"></div>
+      <div class="scene-dot" onclick="goToScene(2)" title="The Pandemic Hits"></div>
+      <div class="scene-dot" onclick="goToScene(3)" title="The Regional Divide"></div>
+      <div class="scene-dot" onclick="goToScene(4)" title="The Road to Recovery"></div>
+      <div class="scene-dot" onclick="goToScene(5)" title="Lessons & Outlook"></div>
+    </div>
+
+    <button class="btn btn-primary" onclick="nextScene()" id="btnNext">Next Scene →</button>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='js/story.js') }}"></script>
+{% endblock %}
