@@ -11,7 +11,7 @@ The complete project documentation is available in the Plugging into the Future 
 The dataset is available in the Consumption folder.
 # Final Project Report
 
-The final project report is available project folder.
+The final project report is available repository.
 # Tableau Dashboard 1
 
 https://public.tableau.com/app/profile/jaya.satya.sai.sravani.shanmukhi/viz/Project_17831435701310/Dashboard1
